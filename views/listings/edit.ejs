@@ -1,0 +1,193 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-4">
+    <div class="col-8 offset-2">
+        <h3>Edit your Listing</h3>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data" id="editForm">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required />
+                <div class="valid-feedback">Title looks good!</div>
+            </div>
+        
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+                <div class="invalid-feedback">Please enter a short description</div>
+            </div>
+
+            <!--  CATEGORY DROPDOWN ADD KIYA -->
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select 
+                    name="listing[category]"
+                    id="category"
+                    class="form-control"
+                    required
+                >
+                    <option value="" disabled>Select a category</option>
+                    <option value="trending" <%= listing.category === 'trending' ? 'selected' : '' %>>🔥 Trending</option>
+                    <option value="rooms" <%= listing.category === 'rooms' ? 'selected' : '' %>>🛏️ Rooms</option>
+                    <option value="iconic-cities" <%= listing.category === 'iconic-cities' ? 'selected' : '' %>>🏙️ Iconic Cities</option>
+                    <option value="mountains" <%= listing.category === 'mountains' ? 'selected' : '' %>>⛰️ Mountains</option>
+                    <option value="castles" <%= listing.category === 'castles' ? 'selected' : '' %>>🏰 Castles</option>
+                    <option value="camping" <%= listing.category === 'camping' ? 'selected' : '' %>>⛺ Camping</option>
+                    <option value="farms" <%= listing.category === 'farms' ? 'selected' : '' %>>🐄 Farms</option>
+                    <option value="arctic" <%= listing.category === 'arctic' ? 'selected' : '' %>>❄️ Arctic</option>
+                </select>
+                <div class="invalid-feedback">Please select a category</div>
+            </div>
+           
+            <!--  Multiple Images Edit -->
+            <div class="mb-3">
+                <label for="images" class="form-label">Upload New Images (Max 4)</label>
+                <input name="listing[images]" type="file" class="form-control" accept="image/*" multiple />
+                <small class="text-muted d-block mt-2">Upload new images to replace current ones</small>
+            </div>
+
+            <!--  Display Current Images -->
+            <% if (listing.images && listing.images.length > 0) { %>
+                <div class="mb-3">
+                    <label class="form-label">Current Images:</label>
+                    <div class="row">
+                        <% listing.images.forEach((img, idx) => { %>
+                            <div class="col-md-3 mb-2">
+                                <img src="<%= img.url %>" alt="listing-<%= idx %>" style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- LOCATION SEARCH SECTION -->
+            <div class="mb-3">
+                <label for="locationSearch" class="form-label">📍 Search Location</label>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="locationSearch" 
+                        class="form-control" 
+                        placeholder="Search location..."
+                        value="<%= listing.location %>"
+                    />
+                    <button type="button" class="btn btn-outline-secondary" onclick="searchLocationEdit()">Search</button>
+                </div>
+                <small class="text-muted d-block mt-2">Location search करके coordinates automatically fill ho jayenge</small>
+                <div id="searchResults" style="display:none; margin-top: 10px;"></div>
+            </div>
+
+            <!-- HIDDEN COORDINATES (read from geometry.coordinates) -->
+            <%
+                let editLng = 77.2170;
+                let editLat = 28.6139;
+                if (listing.geometry && listing.geometry.coordinates && listing.geometry.coordinates.length === 2) {
+                    editLng = listing.geometry.coordinates[0];
+                    editLat = listing.geometry.coordinates[1];
+                }
+            %>
+            <input type="hidden" name="listing[latitude]" id="latitude" value="<%= editLat %>" required />
+            <input type="hidden" name="listing[longitude]" id="longitude" value="<%= editLng %>" required />
+
+            <!--  MAP PREVIEW -->
+            <div class="mb-3">
+                <label class="form-label">🗺️ Map Preview</label>
+                <div id="mapEdit" style="height: 300px; border: 1px solid #ddd; border-radius: 5px;"></div>
+                <small class="text-muted d-block mt-2">Current location: <span id="selectedLocation"><%= listing.location %></span></small>
+            </div>
+
+            <div class="row">       
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required />
+                    <div class="invalid-feedback">Price should be valid</div>
+                </div>  
+            
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label">Country</label>
+                    <input name="listing[country]" value="<%= listing.country %>" placeholder="Enter country" type="text" class="form-control" required />
+                    <div class="invalid-feedback">Country name should be valid</div>
+                </div> 
+            </div>
+
+            <div class="mb-3">
+                <label for="location" class="form-label">Location (Full Address)</label>
+                <input name="listing[location]" id="location" value="<%= listing.location %>" placeholder="Enter location" type="text" class="form-control" required />
+                <div class="invalid-feedback">Location should be valid</div>
+            </div>
+
+            <br>
+            <button class="btn btn-dark edit-btn mb-3">Edit</button>
+        </form>
+    </div>  
+</div>
+
+<!-- ✅ MAP SCRIPT FOR EDIT PAGE (MAPBOX) -->
+<script>
+
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    mapboxgl.accessToken = mapToken;
+
+    const editLng = <%= editLng %>;
+    const editLat = <%= editLat %>;
+
+    // ✅ Mapbox Map initialize with current location
+    const mapEdit = new mapboxgl.Map({
+        container: "mapEdit",
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [editLng, editLat],
+        zoom: 12
+    });
+
+    mapEdit.addControl(new mapboxgl.NavigationControl());
+
+    // Current location marker
+    let markerEdit = new mapboxgl.Marker({ color: "red" })
+        .setLngLat([editLng, editLat])
+        .addTo(mapEdit);
+
+    // ✅ LOCATION SEARCH FUNCTION (Mapbox Geocoding API)
+    async function searchLocationEdit() {
+        const searchInput = document.getElementById('locationSearch').value;
+        
+        if (!searchInput.trim()) {
+            alert('Please enter a location name!');
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchInput)}.json?access_token=${mapToken}&limit=1`
+            );
+            const data = await response.json();
+
+            if (!data.features || data.features.length === 0) {
+                alert('Location not found!');
+                return;
+            }
+
+            const result = data.features[0];
+            const [lng, lat] = result.center;
+
+            // Hidden input fields update
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            document.getElementById('location').value = result.place_name;
+            document.getElementById('selectedLocation').textContent = result.place_name;
+
+            // Map & marker move
+            mapEdit.flyTo({ center: [lng, lat], zoom: 12 });
+            markerEdit.setLngLat([lng, lat]);
+
+        } catch (error) {
+            console.error('Search error:', error);
+            alert('Search error occurred!');
+        }
+    }
+
+    // Enter key support
+    document.getElementById('locationSearch').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchLocationEdit();
+        }
+    });
+</script>

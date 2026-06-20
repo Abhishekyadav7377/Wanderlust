@@ -1,0 +1,264 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+
+        <!-- ================= LISTING CARD ================= -->
+        <div class="card show-card listing-card">
+
+            <!-- ✅ Image Carousel -->
+            <% if (listing.images && listing.images.length > 1) { %>
+                <div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <% listing.images.forEach((img, idx) => { %>
+                            <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
+                                <img 
+                                    src="<%= img.url %>" 
+                                    class="d-block w-100 show-img" 
+                                    alt="listing-image-<%= idx %>" 
+                                    style="height: 30vh; object-fit: cover; border-radius: 1rem; cursor: pointer;"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#imageModal"
+                                    onclick="setModalImage('<%= img.url %>', <%= idx %>)">
+                            </div>
+                        <% }); %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#listingCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+            <% } else if (listing.images && listing.images.length === 1) { %>
+                <img 
+                    src="<%= listing.images[0].url %>" 
+                    class="card-img-top show-img" 
+                    alt="listing_image" 
+                    style="height: 30vh; object-fit: cover; border-radius: 1rem; cursor: pointer;"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#imageModal"
+                    onclick="setModalImage('<%= listing.images[0].url %>', 0)">
+            <% } else { %>
+                <img 
+                    src="https://via.placeholder.com/800x400?text=No+Image" 
+                    class="card-img-top show-img" 
+                    alt="no_image" 
+                    style="height: 30vh; object-fit: cover; border-radius: 1rem;">
+            <% } %>
+
+            <div class="card-body mt-3">
+                <h3 class="card-title"><%= listing.title %></h3>
+                <p class="card-text"><%= listing.description %></p>
+                <p class="card-text"><strong>&#8377; <%= listing.price.toLocaleString("en-IN") %> /night</strong></p>
+                <p class="card-text"><small><%= listing.location %>, <%= listing.country %></small></p>
+                <p class="card-text"><em>Listed by: <b><%= listing.owner ? listing.owner.username : "Unknown" %></b></em></p>
+            </div>
+
+            <!-- ✅ Edit / Delete Buttons -->
+            <% if (currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
+                <div class="btns card-body">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark edit-btn me-2">Edit</a>
+                    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display:inline;">
+                        <button class="btn btn-dark">Delete</button>
+                    </form>
+                </div>
+            <% } %>
+        </div>
+
+    </div>
+</div>
+
+<!-- ✅ IMAGE LIGHTBOX MODAL WITH CAROUSEL -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" style="background-color: #000; border: none;">
+            <div class="modal-header" style="background-color: #111; border: none;">
+                <h5 class="modal-title text-white" id="imageModalLabel">Photo (<span id="currentImageNum">1</span>/<span id="totalImageNum"><%= listing.images ? listing.images.length : 1 %></span>)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0" style="background-color: #000; position: relative;">
+                <img id="modalImage" src="" alt="full-image" style="width: 100%; height: auto; display: block; max-height: 80vh;">
+            </div>
+            <div class="modal-footer" style="background-color: #111; border: none; justify-content: space-between;">
+                <button type="button" class="btn btn-dark" id="prevBtn" onclick="previousImage()">← Previous</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark" id="nextBtn" onclick="nextImage()">Next →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ IMAGE CAROUSEL SCRIPT -->
+<script>
+    // Store all images
+    const allImages = [
+        <% listing.images.forEach((img, idx) => { %>
+            '<%= img.url %>'<% if (idx < listing.images.length - 1) { %>,<% } %>
+        <% }); %>
+    ];
+
+    let currentIndex = 0;
+
+    function setModalImage(imageUrl, index) {
+        currentIndex = index;
+        document.getElementById('modalImage').src = imageUrl;
+        document.getElementById('currentImageNum').textContent = currentIndex + 1;
+        updateButtons();
+    }
+
+    function nextImage() {
+        if (currentIndex < allImages.length - 1) {
+            currentIndex++;
+            document.getElementById('modalImage').src = allImages[currentIndex];
+            document.getElementById('currentImageNum').textContent = currentIndex + 1;
+            updateButtons();
+        }
+    }
+
+    function previousImage() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            document.getElementById('modalImage').src = allImages[currentIndex];
+            document.getElementById('currentImageNum').textContent = currentIndex + 1;
+            updateButtons();
+        }
+    }
+
+    function updateButtons() {
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').disabled = currentIndex === allImages.length - 1;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('imageModal');
+        if (modal.classList.contains('show')) {
+            if (e.key === 'ArrowLeft') previousImage();
+            if (e.key === 'ArrowRight') nextImage();
+        }
+    });
+</script>
+
+<!-- ================= REVIEWS SECTION ================= -->
+
+<div class="row mt-4">
+    <div class="col-8 offset-2">
+
+        <% if (currUser) { %>
+        <hr>
+        <h4>⭐ Leave a Review</h4>
+        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation mb-3">
+            
+            <fieldset class="starability-slot">
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+            
+            <div class="mb-3 mt-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea name="review[comment]" class="form-control" id="comment" rows="3" placeholder="Share your experience..." required></textarea>
+                <div class="invalid-feedback">Please add a comment</div>
+            </div>
+            <button class="btn btn-outline-dark">Submit Review</button>
+        </form>
+        <% } %>
+
+        <hr>
+        <% if (listing.reviews && listing.reviews.length > 0) { %>
+            <h4>💬 All Reviews (<%= listing.reviews.length %>)</h4>
+            <div class="row">
+                <% listing.reviews.forEach(review => { %>
+                    <div class="col-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@<%= review.author ? review.author.username : "Unknown" %></h5>
+                                <p class="starability-result" data-rating="<%= review.rating %>">
+                                    Rated: <%= review.rating %> stars
+                                </p>
+                                <p class="card-text"><%= review.comment %></p>
+                                <% if (currUser && review.author && review.author._id.equals(currUser._id)) { %>
+                                    <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" style="display:inline;">
+                                        <button class="btn btn-sm btn-dark">Delete</button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+
+    </div>
+</div>
+
+<!-- ================= MAP SECTION ================= -->
+
+<div class="row mt-4">
+    <div class="col-8 offset-2">
+        <div class="card show-card listing-card">
+            <div class="card-header">
+                📍 Location on Map
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #map {
+        height: 280px;
+        width: 100%;
+        border-radius: 10px;
+        border: 3px solid #333;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<!-- ✅ MAPBOX CSS -->
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    mapboxgl.accessToken = "<%= process.env.MAP_TOKEN %>";
+
+    const coordinates = <%- JSON.stringify(
+        (listing.geometry && 
+         listing.geometry.coordinates && 
+         listing.geometry.coordinates.length === 2)
+        ? listing.geometry.coordinates
+        : [77.2170, 28.6139]
+    ) %>;
+
+    const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/outdoors-v12",
+        center: coordinates,
+        zoom: 10
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(`
+            <h6><%= listing.title %></h6>
+            <p><%= listing.location %>, <%= listing.country %></p>
+            <p>₹<%= listing.price %>/night</p>
+        `);
+
+    new mapboxgl.Marker({ color: "red" })
+        .setLngLat(coordinates)
+        .setPopup(popup)
+        .addTo(map);
+});
+</script>
