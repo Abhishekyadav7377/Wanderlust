@@ -573,3 +573,282 @@ footer a:hover {
 .shadow-sm {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
 }
+
+/* MOBILE PHONES - 576px और below */
+@media (max-width: 575px) {
+    /* ... पिछला code ... */
+
+    /* ✅ NAVBAR FIX */
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border-color);
+        padding: 10px 0;
+    }
+
+    .navbar-collapse.show {
+        display: block !important;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 10px 15px !important;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    /* ✅ FILTERS FIX */
+    #filters {
+        gap: 6px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter {
+        padding: 4px 8px;
+        min-width: 50px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .filter i {
+        font-size: 14px;
+    }
+
+    .filter p {
+        font-size: 9px;
+    }
+
+    /* ✅ SEARCH FIX */
+    .search-inp {
+        width: 100% !important;
+        padding: 5px 6px !important;
+        margin: 10px 0 !important;
+        display: flex !important;
+        gap: 5px;
+    }
+
+    .search-inp input {
+        flex: 1;
+        font-size: 10px;
+    }
+
+    .search-btn {
+        padding: 5px 8px !important;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    /* ✅ CARDS FIX */
+    .card-img-top {
+        height: 120px;
+    }
+
+    .card-body {
+        padding: 8px !important;
+    }
+
+    .card-title {
+        font-size: 12px;
+        margin-bottom: 4px !important;
+    }
+
+    .card-text {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    /* ✅ ROW FIX - Single column on mobile */
+    .row-cols-lg-3 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .col {
+        padding: 8px !important;
+    }
+
+    .col-md-8, .col-md-4, .col-6 {
+        padding: 8px !important;
+        width: 100% !important;
+    }
+
+    /* ✅ BUTTON FIX */
+    .btn {
+        padding: 6px 8px !important;
+        font-size: 10px;
+        width: auto;
+    }
+
+    .btn-block {
+        width: 100% !important;
+    }
+
+    /* ✅ FORM FIX */
+    .form-control, .form-select, textarea {
+        font-size: 12px;
+        padding: 8px 10px !important;
+        width: 100% !important;
+    }
+
+    /* ✅ MAP FIX */
+    #map {
+        height: 200px !important;
+        width: 100% !important;
+    }
+
+    /* ✅ MODAL FIX */
+    .modal-dialog {
+        margin: 10px auto !important;
+        width: 95% !important;
+    }
+
+    /* ✅ FOOTER FIX */
+    footer {
+        padding: 15px 8px;
+        font-size: 10px;
+    }
+
+    footer a {
+        display: block;
+        margin: 3px 0;
+    }
+
+    /* ✅ REVIEWS FIX */
+    .review-card {
+        padding: 10px;
+        margin: 8px 0;
+    }
+
+    .review-author {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .review-text {
+        font-size: 11px;
+    }
+}
+
+/* SMALL PHONES - 480px और below */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 8px;
+    }
+
+    .navbar {
+        padding: 8px 0 !important;
+    }
+
+    .navbar-brand {
+        font-size: 14px !important;
+    }
+
+    .navbar-toggler {
+        padding: 0.2rem 0.4rem;
+    }
+
+    .nav-link {
+        padding: 8px 12px !important;
+        font-size: 12px;
+    }
+
+    /* Filters */
+    #filters {
+        gap: 6px;
+        padding: 10px 5px;
+    }
+
+    .filter {
+        padding: 4px 6px;
+        min-width: 45px;
+    }
+
+    /* Search */
+    .search-inp {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .search-inp input {
+        width: 100%;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    /* Cards */
+    .card {
+        margin: 6px 0;
+    }
+
+    .card-img-top {
+        height: 100px;
+    }
+
+    .card-body {
+        padding: 6px !important;
+    }
+
+    /* Headings */
+    h1 { font-size: 16px; }
+    h2 { font-size: 14px; }
+    h3 { font-size: 12px; }
+
+    /* Buttons */
+    .btn {
+        padding: 5px 6px !important;
+        font-size: 9px;
+    }
+
+    .btn-block {
+        width: 100% !important;
+    }
+}
+
+/* ✅ UNIVERSAL MOBILE FIX */
+@media (max-width: 600px) {
+    /* No overflow */
+    body, html {
+        overflow-x: hidden;
+    }
+
+    .container, .row, .col {
+        overflow-x: hidden;
+    }
+
+    /* Ensure images fit */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Fix card overflow */
+    .card {
+        overflow: hidden;
+    }
+
+    /* Fix text overflow */
+    p, span, a, h1, h2, h3, h4, h5, h6 {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* No horizontal scroll */
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .col {
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+    }
+}
