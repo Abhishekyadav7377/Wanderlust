@@ -47,7 +47,6 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ SIMPLE SESSION - Memory store use करो अभी
 app.use(session({
     secret: process.env.SESSION_SECRET || "mysupersecretcode",
     resave: false,
@@ -86,6 +85,8 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("listings/error", { message });
 });
 
-app.listen(8080, () => {
-    console.log("server is listening to port 8080");
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log(`server is listening to port ${PORT}`);
 });

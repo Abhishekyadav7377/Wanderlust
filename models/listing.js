@@ -32,7 +32,7 @@ const listingSchema = new mongoose.Schema({
         type:String,
     },
 
-    // ✅ CATEGORY ADD KIYA
+    //CATEGORY ADD KIYA
     category:{
         type:String,
         enum:['trending', 'rooms', 'iconic-cities', 'mountains', 'castles', 'camping', 'farms', 'arctic'],
