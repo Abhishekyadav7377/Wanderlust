@@ -852,3 +852,515 @@ footer a:hover {
         padding-left: 8px !important;
     }
 }
+
+/* ==================== SHOW PAGE RESPONSIVE ==================== */
+
+.listing-card {
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.listing-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.carousel-inner {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    height: 300px;
+    object-fit: cover;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 50px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+}
+
+/* ==================== REVIEWS SECTION ==================== */
+.reviews-section {
+    margin-top: 30px;
+}
+
+.reviews-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+.review-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--primary-color);
+}
+
+.review-author {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.review-rating {
+    color: #ffc107;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.review-text {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ==================== FORMS ==================== */
+.form-section {
+    background: var(--light-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark-color);
+    font-size: 14px;
+}
+
+.form-control, textarea {
+    border: 2px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, textarea:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.1) !important;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn-submit {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background-color: #ff1744;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 56, 92, 0.3);
+}
+
+.btn-danger, .btn-warning, .btn-info {
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover, .btn-warning:hover, .btn-info:hover {
+    transform: translateY(-2px);
+}
+
+/* ==================== MAP ==================== */
+#map {
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ==================== MODAL ==================== */
+.modal-content {
+    border-radius: 12px !important;
+    border: none !important;
+}
+
+.modal-header {
+    background-color: var(--light-color);
+    border: none !important;
+    padding: 15px 20px !important;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.modal-img {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    background: #000;
+}
+
+/* ==================== LISTING INFO ==================== */
+.listing-info {
+    padding: 15px;
+}
+
+.listing-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.listing-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.listing-location {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.listing-owner {
+    font-size: 13px;
+    color: #999;
+}
+
+/* ==================== TABLET (768px और below) ==================== */
+@media (max-width: 768px) {
+    .listing-card {
+        margin-bottom: 15px;
+    }
+
+    .listing-img {
+        height: 250px;
+    }
+
+    .carousel-item img {
+        height: 250px;
+    }
+
+    .review-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .form-section {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    #map {
+        height: 300px;
+        margin-top: 20px;
+    }
+
+    .modal-img {
+        height: 300px;
+    }
+
+    .col-md-8, .col-md-4 {
+        padding: 10px !important;
+    }
+
+    .row {
+        margin: 0 !important;
+    }
+
+    .listing-title {
+        font-size: 20px;
+    }
+
+    .listing-price {
+        font-size: 18px;
+    }
+}
+
+/* ==================== MOBILE (576px और below) ==================== */
+@media (max-width: 575px) {
+    .container {
+        padding: 0 8px;
+    }
+
+    /* Headings */
+    h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    /* Listing Card */
+    .listing-card {
+        margin-bottom: 10px;
+    }
+
+    .listing-img {
+        height: 200px;
+    }
+
+    .carousel-item img {
+        height: 200px;
+    }
+
+    .listing-info {
+        padding: 12px;
+    }
+
+    .listing-title {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .listing-price {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .listing-location {
+        font-size: 12px;
+    }
+
+    .listing-owner {
+        font-size: 12px;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+        margin-top: 20px;
+    }
+
+    .reviews-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    /* Review Card */
+    .review-card {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-left: 3px solid var(--primary-color);
+    }
+
+    .review-author {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .review-rating {
+        font-size: 12px;
+    }
+
+    .review-text {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    /* Form Section */
+    .form-section {
+        padding: 12px;
+        margin-top: 15px;
+    }
+
+    .form-label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .form-control, textarea {
+        font-size: 13px;
+        padding: 8px 10px !important;
+    }
+
+    textarea {
+        min-height: 80px;
+    }
+
+    .btn-submit {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    /* Map */
+    #map {
+        height: 250px;
+        margin-top: 15px;
+    }
+
+    /* Modal */
+    .modal-dialog {
+        width: 95% !important;
+    }
+
+    .modal-img {
+        height: 250px;
+    }
+
+    /* Columns */
+    .col-md-8, .col-md-4 {
+        padding: 8px !important;
+        width: 100% !important;
+    }
+
+    .offset-md-2 {
+        margin-left: 0 !important;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 8px 12px !important;
+        font-size: 12px;
+    }
+
+    .btn-danger, .btn-warning {
+        padding: 8px 12px !important;
+        font-size: 12px;
+    }
+}
+
+/* ==================== SMALL PHONES (480px और below) ==================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 6px;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    h2 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    h3 {
+        font-size: 12px;
+    }
+
+    .listing-img {
+        height: 150px;
+    }
+
+    .carousel-item img {
+        height: 150px;
+    }
+
+    .listing-title {
+        font-size: 16px;
+    }
+
+    .listing-price {
+        font-size: 14px;
+    }
+
+    .listing-location {
+        font-size: 11px;
+    }
+
+    .review-card {
+        padding: 8px;
+    }
+
+    .review-author {
+        font-size: 11px;
+    }
+
+    .review-text {
+        font-size: 11px;
+    }
+
+    .form-label {
+        font-size: 11px;
+    }
+
+    .form-control, textarea {
+        font-size: 12px;
+        padding: 6px 8px !important;
+    }
+
+    .btn-submit {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    #map {
+        height: 200px;
+    }
+
+    .modal-img {
+        height: 200px;
+    }
+}
+
+/* ==================== VERY SMALL PHONES (360px और below) ==================== */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 16px;
+    }
+
+    h2 {
+        font-size: 13px;
+    }
+
+    .listing-img {
+        height: 120px;
+    }
+
+    .carousel-item img {
+        height: 120px;
+    }
+
+    .listing-title {
+        font-size: 14px;
+    }
+
+    .listing-price {
+        font-size: 12px;
+    }
+
+    .review-text {
+        font-size: 10px;
+    }
+
+    #map {
+        height: 150px;
+    }
+}
